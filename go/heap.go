@@ -31,3 +31,18 @@ func (heap *Heap) Get(index int) (Comparable, error) {
 
 	return (*heap)[index], nil
 }
+
+func (heap *Heap) IsMaxHeap() bool {
+	for i, c := range *heap {
+		if i == 0 {
+			continue
+		}
+
+		parent, _ := heap.Get(heap.Parent(i))
+		if c.Compare(parent) > 0 {
+			return false
+		}
+	}
+
+	return true
+}

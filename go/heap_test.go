@@ -14,9 +14,9 @@ func (i Integer) Compare(j Comparable) int8 {
 	}
 
 	if jInt > i {
-		return 1
-	} else if jInt < i {
 		return -1
+	} else if jInt < i {
+		return 1
 	}
 
 	return 0
@@ -222,6 +222,78 @@ func TestHeap_Get(t *testing.T) {
 		if integer != c.Expected {
 			t.Errorf("TC %d: Expected %d from Get. Got %d instead",
 				i, c.Expected, integer,
+			)
+		}
+	}
+}
+
+func TestHeap_IsMaxHeap(t *testing.T) {
+	testCases := []struct {
+		Heap
+		Expected bool
+	}{
+		{
+			Heap([]Comparable{}),
+			true,
+		},
+		{
+			Heap([]Comparable{
+				Integer(1),
+			}),
+			true,
+		},
+		{
+			Heap([]Comparable{
+				Integer(1),
+				Integer(2),
+			}),
+			false,
+		},
+		{
+			Heap([]Comparable{
+				Integer(2),
+				Integer(1),
+				Integer(1),
+			}),
+			true,
+		},
+		{
+			Heap([]Comparable{
+				Integer(16),
+				Integer(14),
+				Integer(10),
+				Integer(8),
+				Integer(7),
+				Integer(9),
+				Integer(3),
+				Integer(2),
+				Integer(4),
+				Integer(1),
+			}),
+			true,
+		},
+		{
+			Heap([]Comparable{
+				Integer(16),
+				Integer(14),
+				Integer(10),
+				Integer(8),
+				Integer(7),
+				Integer(9),
+				Integer(3),
+				Integer(2),
+				Integer(8),
+				Integer(1),
+			}),
+			true,
+		},
+	}
+
+	for i, c := range testCases {
+		isMaxHeap := c.Heap.IsMaxHeap()
+		if isMaxHeap != c.Expected {
+			t.Errorf("TC %d: Expected to be max-heap: %t; got %t instead.",
+				i, c.Expected, isMaxHeap,
 			)
 		}
 	}
