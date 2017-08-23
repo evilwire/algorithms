@@ -46,3 +46,37 @@ func (heap *Heap) IsMaxHeap() bool {
 
 	return true
 }
+
+func (heap *Heap) MaxHeapify(index int) {
+	heapLen := len(*heap)
+	currentElt, err := heap.Get(index)
+	if err != nil {
+		return
+	}
+
+	largest := index
+	var largestElt Comparable = currentElt
+
+	left := heap.Left(index)
+	if left < heapLen {
+		leftElt, _ := heap.Get(left)
+		if leftElt.Compare(currentElt) > 0 {
+			largest = left
+			largestElt = leftElt
+		}
+	}
+
+	right := heap.Right(index)
+	if right < heapLen {
+		rightElt, _ := heap.Get(right)
+		if rightElt.Compare(largestElt) > 0 {
+			largest = right
+			largestElt = rightElt
+		}
+	}
+
+	if largest != index {
+		(*heap)[index], (*heap)[largest] = (*heap)[largest], (*heap)[index]
+		heap.MaxHeapify(largest)
+	}
+}

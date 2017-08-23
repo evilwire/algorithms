@@ -298,3 +298,177 @@ func TestHeap_IsMaxHeap(t *testing.T) {
 		}
 	}
 }
+
+func areLikelyTheSame(a, b Heap) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	for i, c := range a {
+		if b[i].Compare(c) != 0 {
+			return false
+		}
+	}
+
+	return true
+}
+
+func TestHeap_MaxHeapify(t *testing.T) {
+	testCases := []struct {
+		HeapifyAt int
+		Heap, Expected Heap
+	}{
+		{
+			HeapifyAt: 0,
+			Heap: Heap([]Comparable{}),
+			Expected: Heap([]Comparable{}),
+		},
+		{
+			HeapifyAt: -1,
+			Heap: Heap([]Comparable{}),
+			Expected: Heap([]Comparable{}),
+		},
+		{
+			HeapifyAt: 1,
+			Heap: Heap([]Comparable{}),
+			Expected: Heap([]Comparable{}),
+		},
+		{
+			HeapifyAt: 0,
+			Heap: Heap([]Comparable{
+				Integer(1),
+			}),
+			Expected: Heap([]Comparable{
+				Integer(1),
+			}),
+		},
+		{
+			HeapifyAt: 1,
+			Heap: Heap([]Comparable{
+				Integer(1),
+			}),
+			Expected: Heap([]Comparable{
+				Integer(1),
+			}),
+		},
+		{
+			HeapifyAt: 2,
+			Heap: Heap([]Comparable{
+				Integer(1),
+			}),
+			Expected: Heap([]Comparable{
+				Integer(1),
+			}),
+		},
+		{
+			HeapifyAt: -1,
+			Heap: Heap([]Comparable{
+				Integer(1),
+			}),
+			Expected: Heap([]Comparable{
+				Integer(1),
+			}),
+		},
+		{
+			HeapifyAt: 0,
+			Heap: Heap([]Comparable{
+				Integer(1),
+				Integer(2),
+			}),
+			Expected: Heap([]Comparable{
+				Integer(2),
+				Integer(1),
+			}),
+		},
+		{
+			HeapifyAt: 0,
+			Heap: Heap([]Comparable{
+				Integer(1),
+				Integer(2),
+				Integer(3),
+			}),
+			Expected: Heap([]Comparable{
+				Integer(3),
+				Integer(2),
+				Integer(1),
+			}),
+		},
+		{
+			HeapifyAt: 0,
+			Heap: Heap([]Comparable{
+				Integer(1),
+				Integer(3),
+				Integer(2),
+			}),
+			Expected: Heap([]Comparable{
+				Integer(3),
+				Integer(1),
+				Integer(2),
+			}),
+		},
+		{
+			HeapifyAt: 0,
+			Heap: Heap([]Comparable{
+				Integer(16),
+				Integer(4),
+				Integer(10),
+				Integer(14),
+				Integer(7),
+				Integer(9),
+				Integer(3),
+				Integer(2),
+				Integer(8),
+				Integer(1),
+			}),
+			Expected: Heap([]Comparable{
+				Integer(16),
+				Integer(4),
+				Integer(10),
+				Integer(14),
+				Integer(7),
+				Integer(9),
+				Integer(3),
+				Integer(2),
+				Integer(8),
+				Integer(1),
+			}),
+		},
+		{
+			HeapifyAt: 1,
+			Heap: Heap([]Comparable{
+				Integer(16),
+				Integer(4),
+				Integer(10),
+				Integer(14),
+				Integer(7),
+				Integer(9),
+				Integer(3),
+				Integer(2),
+				Integer(8),
+				Integer(1),
+			}),
+			Expected: Heap([]Comparable{
+				Integer(16),
+				Integer(14),
+				Integer(10),
+				Integer(8),
+				Integer(7),
+				Integer(9),
+				Integer(3),
+				Integer(2),
+				Integer(4),
+				Integer(1),
+			}),
+		},
+	}
+
+	for i, c := range testCases {
+		c.Heap.MaxHeapify(c.HeapifyAt)
+
+		if !areLikelyTheSame(c.Heap, c.Expected) {
+			t.Errorf("TC %d: Expected %v. Got %v instead.",
+				i, c.Expected, c.Heap,
+			)
+		}
+	}
+}
