@@ -1,0 +1,6 @@
+# IntelliJ stuff
+.idea/
+
+# go coverage thing
+cover.out
+coverage.html
