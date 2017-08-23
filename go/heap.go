@@ -1,5 +1,6 @@
 package heaps
 
+import "errors"
 
 type Comparable interface {
 	Compare(Comparable) int8
@@ -23,10 +24,10 @@ func (heap *Heap) Right(index int) int {
 	return (index << 1) + 2
 }
 
-func (heap *Heap) Get(index int) Comparable {
-	if index > len(*heap) {
-		return nil
+func (heap *Heap) Get(index int) (Comparable, error) {
+	if index >= len(*heap) || index < 0 {
+		return nil, errors.New("Index out of bounds")
 	}
 
-	return (*heap)[index]
+	return (*heap)[index], nil
 }
